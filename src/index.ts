@@ -7,6 +7,9 @@
 export { FdmsClient } from './client/FdmsClient';
 export { HttpClient } from './client/HttpClient';
 
+// Configuration
+export * from './config';
+
 // Services
 export { DeviceService } from './services/DeviceService';
 export { FiscalDayService } from './services/FiscalDayService';

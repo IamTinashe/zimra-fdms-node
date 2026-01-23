@@ -5,7 +5,20 @@
  */
 
 export { FdmsClient } from './client/FdmsClient';
-export { HttpClient } from './client/HttpClient';
+
+// HTTP Client
+export {
+  HttpClient,
+  HttpMethod,
+  HttpRequestOptions,
+  HttpResponse,
+  HttpAuditEntry,
+  CircuitState,
+  CircuitBreakerConfig,
+  FdmsApiError,
+  RequestInterceptor,
+  ResponseInterceptor,
+} from './client/HttpClient';
 
 // Configuration
 export * from './config';
@@ -20,10 +33,16 @@ export { VerificationService } from './services/VerificationService';
 // Models
 export * from './models';
 
-// Types
-export * from './types';
+// Types - Export specific types to avoid conflicts with config
+export { FiscalState } from './types';
 
 // Errors
-export * from './errors/FdmsError';
+export {
+  FdmsError,
+  FdmsErrorCategory,
+} from './errors/FdmsError';
 export * from './errors/ValidationError';
-export * from './errors/NetworkError';
+export {
+  NetworkError,
+  NetworkErrorCode,
+} from './errors/NetworkError';

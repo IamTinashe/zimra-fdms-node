@@ -1,0 +1,8 @@
+/**
+ * Fiscal day operations service
+ * Handles opening, closing, and managing fiscal days
+ */
+
+export class FiscalDayService {
+  // Implementation will be added in Phase 5
+}

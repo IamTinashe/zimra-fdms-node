@@ -33,6 +33,36 @@ export { VerificationService } from './services/VerificationService';
 // Models
 export * from './models';
 
+// Crypto
+export {
+  CertificateManager,
+  CertificateInfo,
+  CertificateSubject,
+  CsrOptions,
+  KeyPairOptions,
+  CertificateStorageOptions,
+  CertificateFormat,
+} from './crypto/CertificateManager';
+
+export {
+  KeyStore,
+  KeyStoreOptions,
+  KeyStoreEntry,
+} from './crypto/KeyStore';
+
+export {
+  SignatureService,
+  SignatureServiceOptions,
+  SignatureResult,
+  VerificationResult,
+  ReceiptSignatureData,
+  ReceiptLineItemData,
+  ReceiptTaxData,
+  ReceiptPaymentData,
+  FiscalDayReportData,
+  TaxRateTotalData,
+} from './crypto/SignatureService';
+
 // Types - Export specific types to avoid conflicts with config
 export { FiscalState } from './types';
 

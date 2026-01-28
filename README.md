@@ -11,8 +11,7 @@ Production-grade SDK for integrating with Zimbabwe Revenue Authority's (ZIMRA) F
 - ✅ Full ZIMRA FDMS API v7.2 compliance
 - 🔐 Security-first cryptographic operations
 - � X.509 certificate management with CSR generation
-- 🔒 Secure encrypted key storage (AES-256-GCM)
-- �📝 Complete audit logging
+- 🔒 Secure encrypted key storage (AES-256-GCM)- ✍️ RSA-SHA256 digital signatures for receipts- �📝 Complete audit logging
 - 🔄 Automatic retry and offline queue
 - 📊 Real-time fiscal day management
 - 🧾 Receipt signing and QR code generation
@@ -98,6 +97,64 @@ await keyStore.save();
 // Retrieve later
 const storedKey = await keyStore.getPrivateKey('device-key');
 const storedCert = await keyStore.getCertificate('device-key');
+```
+
+## Digital Signatures
+
+The SDK provides RSA-SHA256 digital signature services for receipts and fiscal day reports:
+
+```typescript
+import { SignatureService } from 'zimra-fdms';
+
+// Create signature service with private key
+const signatureService = new SignatureService({
+  privateKey: fs.readFileSync('./device-key.pem'),
+  privateKeyPassword: 'password',
+  enableCache: true  // Cache signatures for identical data
+});
+
+// Sign a receipt
+const receiptResult = signatureService.signReceipt({
+  deviceId: 12345,
+  receiptType: 'FiscalInvoice',
+  receiptCurrency: 'USD',
+  receiptCounter: 1,
+  receiptGlobalNo: 100,
+  invoiceNo: 'INV-001',
+  receiptDate: '2025-01-26T10:00:00Z',
+  receiptLineItems: [
+    { lineNo: 1, lineDescription: 'Product A', lineQuantity: 2, lineUnitPrice: 500, lineTaxPercent: 15, lineTotal: 1000 }
+  ],
+  receiptTaxes: [
+    { taxCode: 'A', taxPercent: 15, taxAmount: 150, salesAmountWithTax: 1150 }
+  ],
+  receiptPayments: [
+    { moneyTypeCode: 0, paymentAmount: 1150 }
+  ],
+  receiptTotal: 1150
+});
+
+console.log('Receipt Signature:', receiptResult.signature);
+
+// Sign fiscal day report
+const dayResult = signatureService.signFiscalDayReport({
+  deviceId: 12345,
+  fiscalDayNo: 1,
+  fiscalDayOpened: '2025-01-26T08:00:00Z',
+  receiptCounter: 50,
+  receiptCounterByType: { 'FiscalInvoice': 48, 'CreditNote': 2 },
+  totalAmount: 125000,
+  totalTax: 16304.35,
+  totalsByTaxRate: [{ taxPercent: 15, taxAmount: 16304.35 }]
+});
+
+console.log('Day Signature:', dayResult.signature);
+
+// Verify a signature
+const verification = signatureService.verifyReceiptSignature(receiptData, signature);
+if (verification.valid) {
+  console.log('Signature is valid');
+}
 ```
 
 ## Documentation
